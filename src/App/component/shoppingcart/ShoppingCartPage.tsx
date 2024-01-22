@@ -1,47 +1,35 @@
 // import React from 'react'
 
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../typescript/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 // import axios from "axios";
-import { fetchProducts } from "./ShoppingCartSlice";
 
 // type Props = {}
 
 const ShoppingCartPage = () => {
 	const dataProducts = useAppSelector((state) => state.shoppingCart);
-	const dispatch = useAppDispatch();
-	useEffect(() => {
-		dispatch(fetchProducts());
-	}, []);
-
-	const total = dataProducts?.reduce(
-		(total, cur) => cur.price * cur.quantity + total,
-		0
-	);
 
 	return (
 		<>
-			<div className="grid grid-flow-row grid-cols-6 gap-x-2 gap-y-4 w-[1200px] mx-auto">
-				<div>
-					<span>Total: $ {total}</span>
-				</div>
+			<div className="grid grid-flow-row grid-cols-4 gap-x-2 gap-y-4 w-[1200px] mx-auto">
 				{dataProducts?.map((item) => {
 					return (
 						<div
 							key={item.id}
-							className="p-2 relative flex flex-col space-y-3 items-center rounded-lg"
+							className="p-1 relative flex border rounded-lg bg-slate-200"
 						>
-							<div>
+							<div className="basis-1/3 ">
 								<img
-									src={item.thumbnailUrl}
-									alt="image-product"
-									className="rounded-md"
+									src={item.thumbnail}
+									alt="image-book"
+									className="w-full h-full"
 								/>
 							</div>
-							<div className="text-red-500 px-2 py-1 rounded-md bg-white  flex justify-evenly space-x-3">
-								<span>{item.title}</span>
-								<span>${item.price}</span>
-								<span>Total: {item.quantity}</span>
+							<div className="text-black px-2 py-1 bg-slate-200 rounded-md flex flex-col items-start space-y-1 basis-2/3">
+								<span>{item.name}</span>
+								<span>{item.description}</span>
+								<span>Issue: {item.createdAt}</span>
+								<span> {item.author}</span>
 							</div>
 						</div>
 					);

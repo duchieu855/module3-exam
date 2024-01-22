@@ -1,64 +1,34 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface StyleProduct {
-        	id: number;
-        	title: string;
-        	thumbnailUrl: string;
-            price:number;
-            quantity: number;
+interface ListBooks {
+    id: number;
+	name: string;
+	thumbnail: string;
+	description: string;
+	author: string;
+    createdAt: string;
 }
 
-const initialState :StyleProduct[] = []
+const initialState :ListBooks[] = []
 
 export const shoppingCartSlice = createSlice(
     {
         name:"shoppingCart",
         initialState,
         reducers: {
-            addToCart:(state , action :PayloadAction<StyleProduct> ) => {
+            addToCart:(state , action :PayloadAction<ListBooks> ) => {
                 const product = action.payload ;
-                if(state.some((item) => item.id === product.id)) {
-                    const index = state.findIndex((item) => item.id===product.id)
-                     state[index].quantity += 1
-                     return state
-                } else {
-                    return [...state,product]
-                }
+                
+                return [...state,product]
+                
             }
         },
-        extraReducers: (builder)=> {
-            builder.addCase(fetchProducts.fulfilled , (state,action) =>{
-                return state = action.payload
-            })
-        }
+        
     }
 )
 
-export const addProduct = createAsyncThunk(
-    "shoppingCart/addProduct", 
-    async (product : StyleProduct)=>{
-        try {
-            
-            const newProduct = {...product, quantity: 1}
-            const res = await axios.post("http://localhost:3000/api/shoppingcart", newProduct)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-)
-export const fetchProducts = createAsyncThunk(
-    "shoppingCart/fetchProducts",
-    async ()=>{
-        try {
-            const response=await axios.get('http://localhost:3000/api/shoppingcart')
-            console.log(response.data)
-            return response.data;
-        } catch (err) {
-            console.log(err)
-        }
-    }
-)
+
+
 
 export const {addToCart} = shoppingCartSlice.actions
 
